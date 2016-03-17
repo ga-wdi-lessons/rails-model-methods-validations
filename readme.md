@@ -31,6 +31,65 @@ With this, business logic used in models can be re-used in multiple different ro
 
 In comparison, the same business logic in the controller can only be used via the web interface.
 
+Lets look at an example.
+
+Say we are working on a blog, and a couple of our business rules are:
+
+- If a user is logged in, and they visit the `index` for `posts`, they should only see all of their posts.
+- If a user is not logged in and they visit the `index` page for `posts`, they should see all posts.
+
+An app where all the logic lives in the `posts` controller might look similar to:
+
+```ruby
+class PostsController < ApplicationController
+  def index
+    @user = User.find(session[:user_id]) || User.new
+    if @user
+      if @user.signed_in?
+        @posts = @user.posts
+      else
+        @posts = Post.all
+      end
+    else
+      @posts = Post.all
+    end
+  end
+end
+```
+
+**Q** Now this is just pseudo-code, but can we identify any problems with the current implementation?
+> A: Our code is not Dry, and is not practicing seperation of concerns
+
+By moving this business logic to a method on the `Post` model, we could re-write our `index` action using something like:
+
+```ruby
+class PostsController < ApplicationController
+  def index
+    @user = User.find(session[:user_id]) || User.new
+    @posts = Post.find_all_posts(@user)
+  end
+```
+The implementation for our custom method, `find_all_posts` might look something like this:
+
+```ruby
+class Post < ActiveRecord::Base
+  belongs_to :user
+
+  def self.find_all_posts user
+    if user && user.signed_in?
+      posts = user.posts
+    else
+      post = self.all
+  end
+end
+```
+**Q** Important to note, what type of method did we just write?
+> A: A class method
+
+FYI, We can also add custom instance methods to our models.
+
+### Fat Models, Skinny Controllers
+
 This design pattern has developed such a strong following in the Rails Community, that it even has it's own catch phrase: "**Fat Models, Skinny Controllers**"
 
 > The motto “Fat Model, Skinny Controller” refers to how the M and C parts of MVC ideally work together. Namely, any non-response-related logic should go in the model, ideally in a nice, testable method. Meanwhile, the “skinny” controller is simply a nice interface between the view and model.
@@ -51,7 +110,12 @@ Matz's Rules for Writing Object-Oriented Code
 
 ### (You-Do) Garnet Scavenger Hunt (10 / 25)
 
-Incorporating what you just learned about best practices, take some time reviewing the code base for [Garnet](http://github.com/ga-dc/garnet), to see how our team take's advangtage of the power of model method in a production Rails app.
+Incorporating what you just learned about best practices, take some time reviewing the code base for [Garnet](http://github.com/ga-dc/garnet), to see how our team take's advantage of the power of model method in a production Rails app.
+
+In particular, look at:
+
+- The models code, especially the [User model](https://github.com/ga-dc/garnet/blob/master/app/models/user.rb) in `app/models/user.rb`
+- Look at some of the code in the controller files in `app/controllers`
 
 Some things to consider:
 
@@ -105,7 +169,7 @@ Read sections 1-1.3 and 2 in the Rails Guides official [Documentation](http://gu
 
 #### Adding Validations (15 / 110)
 
-Validation is a very important issue to consider when persisting to the database, so the methods `save` and `update` take it into account when running.
+Validation is a very important issue to consider when persisting to the database. In Active Record, the methods `save` and `update` take validations into account when run.
 
 When invoked, both methods  return `false` when validation fails and they didn't actually perform any operation on the database.
 
@@ -161,9 +225,22 @@ Write and implement a [custom validation](http://guides.rubyonrails.org/active_r
 
 Active Record callbacks allow us to attach code to certain events in the life-cycle of our models.
 
-This lets us add behavior to our models by transparently executing code when those events occur, like whenever we create a new record, update it, destroy it .
+This lets us add behavior to our models by transparently executing code when those events occur, like whenever we create a new record, update it, destroy it.
 
 Callbacks allows us to trigger logic before or after an alteration of an object's state.
+
+For example:
+```ruby
+class User < ActiveRecord::Base
+  validates :username, :email, presence: true
+
+  before_create :generate_name
+
+  def generate_name
+    self.name = username.capitalize if name.blank?
+  end
+end
+```
 
 The most commonly used ones are:
 
