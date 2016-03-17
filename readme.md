@@ -96,9 +96,9 @@ This design pattern has developed such a strong following in the Rails Community
 
 We as Rails developers looking to follow best practices, want to stay on top of recent industry trends. Thankfully Sandi Metz, renowned Rubyist and author of [POODR](http://www.poodr.com/), has come up with a set of rules to help serve as guidelines when trying to write clean, DRY, code that practices seperation of concerns.
 
-> **Watch** [Matz's talk](https://www.youtube.com/watch?v=npOGOmkxuio) introducing her rules in Barcelona Ruby Conference 2013. The rules start around the 8 minute mark.
+> **Watch** [Metz's talk](https://www.youtube.com/watch?v=npOGOmkxuio) introducing her rules in Barcelona Ruby Conference 2013. The rules start around the 8 minute mark.
 
-Matz's Rules for Writing Object-Oriented Code
+Metz's Rules for Writing Object-Oriented Code
 
 1. **Classes should be no more than 100 lines long**.
 2. **Ruby methods should be no more than 5 lines long**.
@@ -120,7 +120,7 @@ In particular, look at:
 Some things to consider:
 
 - What are some of the general themes of the purpose of these model methods?
--  Are there any aggregious examples of breaking Matz's rules?
+-  Are there any aggregious examples of breaking Metz's rules?
 - Can you think of any opportunities to refactor, by moving current controller or view code to the model?
 
 ### (Exercise) Rails Contacts
