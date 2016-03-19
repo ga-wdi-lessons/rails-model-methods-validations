@@ -276,6 +276,7 @@ None. But it might be a good idea to incorporate custom model methods to help im
 ## Resources
 
 - [Sandy Metz Rules For Developers](https://robots.thoughtbot.com/sandi-metz-rules-for-developers)
+- [The Sandi Meter](https://github.com/makaroni4/sandi_meter)
 - [Ruby on Rails Best Practices](http://www.sitepoint.com/10-ruby-on-rails-best-practices/)
 - [Simple Rules to Good OO in Rails](http://thunderboltlabs.com/blog/2013/01/23/5-simple-rules-to-good-oo-in-rails/)
 - [Rails Validations](http://guides.rubyonrails.org/active_record_validations.html#validations-overview)
