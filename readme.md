@@ -88,6 +88,7 @@ class Post < ActiveRecord::Base
       posts = user.posts
     else
       post = self.all
+    end
   end
 end
 ```
