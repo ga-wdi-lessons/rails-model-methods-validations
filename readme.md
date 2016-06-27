@@ -9,13 +9,19 @@
 
 ## Framing (15 / 15)
 
-**Q**:  So far in the Rails apps we have been building, where does the majority of our logic live?
+<details>
+<summary>**Q**:  So far in the Rails apps we have been building, where does the majority of our logic live?</summary>
 
 >  A: Our controllers
 
-**Q**: Where should it be?
+</details>
+
+<details>
+<summary>**Q**: Where should it be?</summary>
 
 > A: Our models
+
+</details>
 
 **Why?**
 
@@ -23,9 +29,11 @@ In short, to practice separation of concerns.
 
 In Rails, your controller is the coordinator that takes parameters and returns HTML, JSON or some other format. It shouldn’t be making decisions above that.
 
-Let's review the model's role and responsibility in Rails' MVC architecture.
+Let's review the **Model**'s role and responsibility in Rails' MVC architecture.
 
-Through Active Record, our models encapsulate the data and domain logic of our application, by using Ruby classes as wrappers for the records in our database.
+### The M in MVC
+
+Through Active Record, our models encapsulate the *data* and *domain logic* of our application, by using Ruby classes as wrappers for the records in our database.
 
 With this, business logic used in models can be re-used in multiple different routes, or in web-service APIs, or a command-line scripts. It can also be easily unit tested.
 
